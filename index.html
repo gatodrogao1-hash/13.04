@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ran - Nuestra Historia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #080706; 
+            /* Cambiado a un tono crema/oro suave */
+            --gold-light: rgba(236, 220, 180, 0.15); 
+            --gold-solid: #c5a880;
+            --yellow-glow: #e9d1a9; /* Un color champán más armónico */
+            --text-high: #e0d8d0;
+            --text-mid: rgba(224, 216, 208, 0.5);
+            --text-low: rgba(224, 216, 208, 0.25);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-high);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .background-aura {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, var(--gold-light) 0%, transparent 75%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .spacer { height: 100vh; }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 25px;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+        section.visible { opacity: 1; }
+
+        h1, h2, .serif { font-family: 'Playfair Display', serif; }
+        .italic { font-style: italic; }
+        .caps-label { 
+            text-transform: uppercase; 
+            letter-spacing: 5px; 
+            font-size: 0.65rem; 
+            color: var(--text-low); 
+            margin: 10px 0; 
+        }
+
+        /* --- CUADROS CON BRILLO SUAVIZADO --- */
+        .glow-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(197, 168, 128, 0.15);
+            padding: 40px 30px;
+            border-radius: 15px;
+            transition: all 0.5s ease;
+            cursor: pointer;
+            width: 85vw;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+        .glow-card:active {
+            /* Brillo más sutil y elegante */
+            box-shadow: 0 0 30px rgba(233, 209, 169, 0.25);
+            background: rgba(233, 209, 169, 0.05);
+            border-color: var(--yellow-glow);
+            transform: scale(0.98);
+        }
+
+        /* --- SLIDER HORIZONTAL --- */
+        .horizontal-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            width: 100vw;
+            padding-bottom: 50px;
+            scrollbar-width: none;
+        }
+        .horizontal-slider::-webkit-scrollbar { display: none; }
+        
+        .slide-item {
+            flex: 0 0 100vw;
+            scroll-snap-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- PROMESAS 3D --- */
+        .promise-card { width: 300px; height: 420px; perspective: 1000px; }
+        .promise-inner {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .promise-card.flipped .promise-inner { transform: rotateY(180deg); }
+        .p-front, .p-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            padding: 30px; border-radius: 20px;
+            border: 1px solid rgba(197, 168, 128, 0.2);
+            background: #0f0e0d;
+        }
+        .p-back { 
+            transform: rotateY(180deg); 
+            border-color: var(--yellow-glow);
+            /* Sombra interna más tenue */
+            box-shadow: inset 0 0 20px rgba(233, 209, 169, 0.1);
+        }
+
+        /* --- SECCIÓN FINAL --- */
+        .final-line { width: 60px; border: 0; border-top: 1px solid var(--gold-solid); margin: 25px auto; opacity: 0.3; }
+        .happy-birthday-text {
+            font-size: 3rem;
+            color: var(--yellow-glow);
+            /* Resplandor del texto suavizado */
+            text-shadow: 0 0 20px rgba(233, 209, 169, 0.5);
+            margin: 5px 0;
+        }
+
+        .music-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 100;
+            background: none; border: 1px solid var(--gold-solid);
+            color: var(--gold-solid); border-radius: 50%;
+            width: 45px; height: 45px; cursor: pointer;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body onclick="playMusic()">
+
+    <div class="background-aura"></div>
+    <audio id="bg-audio" loop><source src="musica.mp3" type="audio/mpeg"></audio>
+    <button class="music-btn" onclick="toggleMute(event)">♫</button>
+
+    <section class="fade-in">
+        <p class="caps-label">NUESTRA HISTORIA</p>
+        <h1 style="font-size: 4rem; margin: 10px 0;">De Amor</h1>
+        <p class="serif op-mid" style="opacity: 0.5;">Happy Birthday, love</p>
+        <p class="caps-label" style="margin-top: 100px; opacity: 0.2;">DESLIZA PARA EMPEZAR</p>
+    </section>
+
+    <div class="spacer"></div>
+
+    <section class="fade-in">
+        <div class="glow-card">
+            <h2 class="serif italic" style="font-size: 2.8rem; margin: 0;">El comienzo,</h2>
+            <p class="caps-label">NUESTRO PRIMER ENCUENTRO</p>
+            <p style="line-height: 1.8; opacity: 0.8; font-size: 0.9rem;">
+                Parece que fue ayer cuando sentí que realmente me gustabas. Me sentía algo nervioso, de tal magnitud que hoy me haces reír
+              
+              en ese momento no imaginaba que estaba conociendo a la persona que se convertiría en lo más especial de mi vida, pero algo en mi interior ya sabía que lo nuestro iba a ser increíble
+              a veces, aunque sea mínimo, un día sin ti se siente diferente
+              y quiero que sepas que tú eres mi mejor casualidad.
+            </p>
+        </div>
+    </section>
+
+    <div class="spacer"></div>
+
+    <section class="fade-in">
+        <h2 class="serif">Un capítulo de nosotros</h2>
+        <p class="caps-label" style="opacity: 0.3;">(MUEVE EL DEDO HACIA EL LADO)</p>
+        
+        <div class="horizontal-slider">
+            <div class="slide-item">
+                <div class="glow-card">
+                    <p class="caps-label">LA RAZÓN DE ENTREGARTE MI CORAZÓN</p>
+                    <p style="opacity: 0.7; line-height: 1.6;">Cuando menos me lo esperaba, me enamoré de ti, de tus risas y chistes malos, de tu forma de ver la vida y de lo radiante que eres para mí.   como una estrella brillando en el cielo oscuro de la noche.</p>
+                </div>
+            </div>
+            <div class="slide-item">
+                <div class="glow-card">
+                    <p class="caps-label">LOS INCREÍBLES MOMENTOS</p>
+                    <p style="opacity: 0.7; line-height: 1.6;">A medida que pasaron los meses, nuestra trayectoria se llenó de momentos que hoy guardo como grandes recuerdos. desde las risas interminables por tonterías que solo nosotros entendíamos, hasta esos días en los que el apoyo del otro fue lo que nos ayudó a seguir adelante</p>
+                </div>
+            </div>
+            <div class="slide-item">
+                <div class="glow-card">
+                    <p class="caps-label">EL AMOR ENTRE LA PAZ</p>
+                    <p style="opacity: 0.7; line-height: 1.6;">llegamos a los cinco o cuatro meses, y de repente ya no era solo la emoción de lo nuevo, sino la paz de lo conocido. fue ahi donde nuestras historias se
+empezaron a entrelazar de verdad, ya no solo compartíamos las risas de las citas perfectas, sino también el cansancio de los días y las dudas de la vida. en ese tramo de nuestra trayectoria aprendi que quererte era facil, pero que construir contigo era lo más gratificante que me había pasado nunca.
+</p>
+                </div>
+            </div>
+            <div class="slide-item">
+                <div class="glow-card">
+                    <p class="caps-label">ESCOGIENDOTE SIEMPRE</p>
+                    <p style="opacity: 0.7; line-height: 1.6;">es increíble pensar que, después de un año entero, sigo descubriendo cosas nuevas de ti que me fascinan. una emoción nueva, un sueño que no me habías contado o esa pasión que pones en las cosas que te gustan. me encanta que sigas siendo un libro que nunca termino de leer y que cada capítulo sea mejor que el anterior, gracias por dejarme entrar en tu mundo y por ser la persona más auténtica que he conocido.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="spacer"></div>
+
+    <section class="fade-in">
+        <h2 class="serif">Las Promesas</h2>
+        <p class="caps-label" style="opacity: 0.3;">(DESLIZA Y TOCA PARA DESCUBRIR)</p>
+        
+        <div class="horizontal-slider">
+            <div class="slide-item">
+                <div class="promise-card" onclick="this.classList.toggle('flipped')">
+                    <div class="promise-inner">
+                        <div class="p-front"><span class="serif" style="font-size: 3rem;">I</span></div>
+                        <div class="p-back"><p>aunque ya no caminemos de la mano, prometo que si algún día el mundo se te cae encima, siempre puedes llamarme. seré esa persona que te escuche atentamente, porque tu bienestar siempre me importará.</p></div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-item">
+                <div class="promise-card" onclick="this.classList.toggle('flipped')">
+                    <div class="promise-inner">
+                        <div class="p-front"><span class="serif" style="font-size: 3rem;">II</span></div>
+                        <div class="p-back"><p>prometo quererte incluso si me quieres pelear todos los dias y me recuerdes que ya me dejaste y somos exs (aún no me adapto okey)</p></div>
+                    </div>
+                </div>
+              </div>
+              <div class="slide-item">
+    <div class="promise-card" onclick="this.classList.toggle('flipped')">
+        <div class="promise-inner">
+            <div class="p-front"><span class="serif" style="font-size: 3rem;">III</span></div>
+            <div class="p-back">
+                <p>prometo que, sin importar quién llegue después, siempre tendrás un espacio especial en mi vida. eres y serás el mejor del mundo,
+para mí.</p>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+    </section>
+
+    <div class="spacer"></div>
+
+    <section class="fade-in">
+        <p class="serif" style="font-size: 1.3rem; opacity: 0.7;">Y  finalmente...</p>
+        <hr class="final-line">
+        <h1 class="happy-birthday-text serif">Feliz cumpleaños!!</h1>
+        <p class="melon-text serif italic">mi corazón de melón</p>
+        <hr class="final-line">
+        <p class="serif" style="max-width: 250px; line-height: 1.8; opacity: 0.9;">Te amo y nunca dejaré de hacerlo.</p>
+        <p class="caps-label" style="margin-top: 60px; color: var(--text-high); opacity: 1;">13 . 04 . 26'</p>
+    </section>
+
+    <script>
+        const audio = document.getElementById('bg-audio');
+        let playing = false;
+
+        function playMusic() {
+            if(!playing) {
+                audio.play().catch(e => console.log("Esperando interacción"));
+                playing = true;
+            }
+        }
+
+        function toggleMute(e) {
+            e.stopPropagation();
+            if(audio.paused) audio.play();
+            else audio.pause();
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
